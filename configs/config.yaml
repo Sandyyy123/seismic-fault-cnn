@@ -1,0 +1,36 @@
+model:
+  architecture: unet          # unet | resnet_clf | simple_cnn
+  in_channels: 1
+  num_classes: 2              # 0=no-fault 1=fault
+  base_filters: 64
+  depth: 4                    # U-Net encoder depth
+  dropout: 0.3
+
+data:
+  patch_size: 128             # spatial patch size (px)
+  patch_stride: 64            # stride for patch extraction
+  normalize: true
+  augment: true
+  train_split: 0.75
+  val_split: 0.15
+  test_split: 0.10
+
+training:
+  epochs: 100
+  batch_size: 16
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-5
+  scheduler: cosine           # cosine | step | plateau
+  early_stopping_patience: 15
+  dice_weight: 0.5
+  bce_weight: 0.5
+
+paths:
+  data_dir: data/
+  checkpoint_dir: checkpoints/
+  log_dir: runs/
+  results_dir: results/
+
+inference:
+  threshold: 0.5
+  overlap_mode: average       # average | max for overlapping patches
